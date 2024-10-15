@@ -1,3 +1,5 @@
+import { appendChild, createElement } from '../utils';
+
 const prodList = [
 	{ id: 'p1', name: '상품1', val: 10000, q: 50 },
 	{ id: 'p2', name: '상품2', val: 20000, q: 30 },
@@ -6,11 +8,16 @@ const prodList = [
 	{ id: 'p5', name: '상품5', val: 25000, q: 10 },
 ];
 
-const sel = document.createElement('select');
-const addBtn = document.createElement('button');
-const cartDisp = document.createElement('div');
-const sum = document.createElement('div');
-const stockInfo = document.createElement('div');
+const sel = createElement({ tagName: 'select', id: 'product-select', className: 'border rounded p-2 mr-2' });
+const addBtn = createElement({
+	tagName: 'button',
+	id: 'add-to-cart',
+	className: 'bg-blue-500 text-white px-4 py-2 rounded',
+	textContent: '추가',
+});
+const cartDisp = createElement({ tagName: 'div', id: 'cart-items' });
+const sum = createElement({ tagName: 'div', id: 'cart-total', className: 'text-xl font-bold my-4' });
+const stockInfo = createElement({ tagName: 'div', id: 'stock-status', className: 'text-sm text-gray-500 mt-2' });
 
 let lastSel;
 let bonusPts = 0;
@@ -22,69 +29,58 @@ function main() {
 	const cont = document.createElement('div');
 	const wrap = document.createElement('div');
 	const hTxt = document.createElement('h1');
-	cartDisp.id = 'cart-items';
-	sum.id = 'cart-total';
-	sel.id = 'product-select';
-	addBtn.id = 'add-to-cart';
 
-	stockInfo.id = 'stock-status';
 	cont.className = 'bg-gray-100 p-8';
 	wrap.className = 'max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8';
 	hTxt.className = 'text-2xl font-bold mb-4';
-	sum.className = 'text-xl font-bold my-4';
-	sel.className = 'border rounded p-2 mr-2';
-	addBtn.className = 'bg-blue-500 text-white px-4 py-2 rounded';
-	stockInfo.className = 'text-sm text-gray-500 mt-2';
 	hTxt.textContent = '장바구니';
-	addBtn.textContent = '추가';
 
 	updateSelOpts();
 
-	wrap.appendChild(hTxt);
-	wrap.appendChild(cartDisp);
-	wrap.appendChild(sum);
-	wrap.appendChild(sel);
-	wrap.appendChild(addBtn);
-	wrap.appendChild(stockInfo);
-	cont.appendChild(wrap);
-	root.appendChild(cont);
+	appendChild({ parent: wrap, children: [hTxt, cartDisp, sum, sel, addBtn, stockInfo] });
+	appendChild({ parent: cont, children: wrap });
+	appendChild({ parent: root, children: cont });
 
 	calcCart();
 
-	setTimeout(function () {
-		setInterval(function () {
-			const luckyItem = prodList[Math.floor(Math.random() * prodList.length)];
-			if (Math.random() < 0.3 && luckyItem.q > 0) {
-				luckyItem.val = Math.round(luckyItem.val * 0.8);
-				alert('번개세일! ' + luckyItem.name + '이(가) 20% 할인 중입니다!');
-				updateSelOpts();
-			}
-		}, 30000);
-	}, Math.random() * 10000);
-	setTimeout(function () {
-		setInterval(function () {
-			if (lastSel) {
-				const suggest = prodList.find(function (item) {
-					return item.id !== lastSel && item.q > 0;
-				});
-				if (suggest) {
-					alert(suggest.name + '은(는) 어떠세요? 지금 구매하시면 5% 추가 할인!');
-					suggest.val = Math.round(suggest.val * 0.95);
-					updateSelOpts();
-				}
-			}
-		}, 60000);
-	}, Math.random() * 20000);
+	// setTimeout(function () {
+	// 	setInterval(function () {
+	// 		const luckyItem = prodList[Math.floor(Math.random() * prodList.length)];
+	// 		if (Math.random() < 0.3 && luckyItem.q > 0) {
+	// 			luckyItem.val = Math.round(luckyItem.val * 0.8);
+	// 			alert('번개세일! ' + luckyItem.name + '이(가) 20% 할인 중입니다!');
+	// 			updateSelOpts();
+	// 		}
+	// 	}, 30000);
+	// }, Math.random() * 10000);
+	// setTimeout(function () {
+	// 	setInterval(function () {
+	// 		if (lastSel) {
+	// 			const suggest = prodList.find(function (item) {
+	// 				return item.id !== lastSel && item.q > 0;
+	// 			});
+	// 			if (suggest) {
+	// 				alert(suggest.name + '은(는) 어떠세요? 지금 구매하시면 5% 추가 할인!');
+	// 				suggest.val = Math.round(suggest.val * 0.95);
+	// 				updateSelOpts();
+	// 			}
+	// 		}
+	// 	}, 60000);
+	// }, Math.random() * 20000);
 }
 function updateSelOpts() {
 	sel.innerHTML = '';
 	prodList.forEach(function (item) {
-		const opt = document.createElement('option');
-		opt.value = item.id;
+		console.log(item.q);
+		const opt = createElement({
+			tagName: 'option',
+			setAttribute: {
+				value: item.id,
+			},
+			textContent: item.name + ' - ' + item.val + '원',
+		});
 
-		opt.textContent = item.name + ' - ' + item.val + '원';
-		if (item.q === 0) opt.disabled = true;
-		sel.appendChild(opt);
+		appendChild({ parent: sel, children: opt });
 	});
 }
 

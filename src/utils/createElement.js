@@ -1,9 +1,10 @@
-export function createElement(props) {
-	const { tagName, props } = props;
-
-	const element = document.createElement(tagName);
+export function createElement(type, props) {
+	const element = document.createElement(type);
 	if (!!props) {
 		Object.keys(props).forEach((key) => {
+			if (key === 'textContent') {
+				element[key] = props[key];
+			}
 			if (key.startsWith('on')) {
 				const eventName = key.toLowerCase().substring(2);
 				element.addEventListener(eventName, props[key]);

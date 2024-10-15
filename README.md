@@ -1,6 +1,11 @@
 ## 기본과제 진행과정
 
-1. 네이밍 이외의 모든 것들을 다시 리팩토링 한다.
+1. 변수를 var를 사용한 것을 const와 let으로 변경
+2. document.createElement후 attribute를 하는 번거롭고 가독성이 떨어진다 생각한 부분을
+   커스텀 함수 createElement로 사용
+3. 문자열 처리 ``(백틱)으로 변경
+4. 함수 수정
+   1. calcCart 2중포문 되있는 부분 익명함수 function 삭제
 
 ## 우리의 진행과정
 

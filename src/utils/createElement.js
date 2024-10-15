@@ -1,16 +1,21 @@
 export function createElement(props) {
-	const { tagName, setAttribute, ...rest } = props;
-	// ...rest => tagName, className, id
+	const { tagName, props } = props;
 
 	const element = document.createElement(tagName);
-	Object.keys(rest).forEach((key) => {
-		element[key] = props[key];
-	});
-
-	setAttribute &&
-		Object.keys(setAttribute).forEach((key) => {
-			element.setAttribute(key, setAttribute[key]);
+	if (!!props) {
+		Object.keys(props).forEach((key) => {
+			if (key.startsWith('on')) {
+				const eventName = key.toLowerCase().substring(2);
+				element.addEventListener(eventName, props[key]);
+			} else if (key === 'className') {
+				element.setAttribute('class', props[key]);
+			} else if (key === 'style') {
+				Object.assign(element.style, props[key]);
+			} else {
+				element.setAttribute(key, props[key]);
+			}
 		});
+	}
 
 	return element;
 }

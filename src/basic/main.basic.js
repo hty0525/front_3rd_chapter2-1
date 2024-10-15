@@ -67,8 +67,7 @@ function main() {
 function updateSelOpts() {
 	sel.innerHTML = '';
 	prodList.forEach(function (item) {
-		const opt = createElement('option', { value: item.id, textContent: item.name + ' - ' + item.val + '원' });
-
+		const opt = createElement('option', { value: item.id, textContent: `${item.name} - ${item.val}원` });
 		appendChild({ parent: sel, children: opt });
 	});
 }
@@ -119,11 +118,11 @@ function calcCart() {
 		totalAmt *= 1 - 0.1;
 		discRate = Math.max(discRate, 0.1);
 	}
-	sum.textContent = '총액: ' + Math.round(totalAmt) + '원';
+	sum.textContent = `총액: ${Math.round(totalAmt)}원`;
 	if (discRate > 0) {
 		const span = createElement('span', {
 			className: 'text-green-500 ml-2',
-			textContent: '(' + (discRate * 100).toFixed(1) + '% 할인 적용)',
+			textContent: `(${(discRate * 100).toFixed(1)}% 할인 적용)`,
 		});
 
 		appendChild({ parent: sum, children: span });
@@ -139,14 +138,17 @@ const renderBonusPts = () => {
 
 		appendChild({ parent: sum, children: ptsTag });
 	}
-	ptsTag.textContent = '(포인트: ' + bonusPts + ')';
+	ptsTag.textContent = `(포인트: ${bonusPts})`;
 };
 
 function updateStockInfo() {
 	let infoMsg = '';
 	prodList.forEach(function (item) {
+		if (item.name === '상품1') {
+			console.log(item.q);
+		}
 		if (item.q < 5) {
-			infoMsg += item.name + ': ' + (item.q > 0 ? '재고 부족 (' + item.q + '개 남음)' : '품절') + '\n';
+			infoMsg += `${item.name}: ${item.q > 0 ? `재고 부족 (${item.q}개 남음)` : '품절'} \n`;
 		}
 	});
 	stockInfo.textContent = infoMsg;
@@ -164,7 +166,7 @@ addBtn.addEventListener('click', function () {
 		if (item) {
 			const newQty = parseInt(item.querySelector('span').textContent.split('x ')[1]) + 1;
 			if (newQty <= itemToAdd.q) {
-				item.querySelector('span').textContent = itemToAdd.name + ' - ' + itemToAdd.val + '원 x ' + newQty;
+				item.querySelector('span').textContent = `${itemToAdd.name} - ${itemToAdd.val}원 x ${newQty}`;
 				itemToAdd.q--;
 			} else {
 				alert('재고가 부족합니다.');
@@ -208,8 +210,9 @@ cartDisp.addEventListener('click', function (event) {
 			const qtyChange = parseInt(tgt.dataset.change);
 			const newQty = parseInt(itemElem.querySelector('span').textContent.split('x ')[1]) + qtyChange;
 			if (newQty > 0 && newQty <= prod.q + parseInt(itemElem.querySelector('span').textContent.split('x ')[1])) {
-				itemElem.querySelector('span').textContent =
-					itemElem.querySelector('span').textContent.split('x ')[0] + 'x ' + newQty;
+				itemElem.querySelector('span').textContent = `${
+					itemElem.querySelector('span').textContent.split('x ')[0]
+				} x ${newQty}`;
 				prod.q -= qtyChange;
 			} else if (newQty <= 0) {
 				itemElem.remove();

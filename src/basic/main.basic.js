@@ -75,8 +75,8 @@ function main() {
 }
 function updateSelOpts() {
 	sel.innerHTML = '';
-	prodList.forEach(function (item) {
-		const opt = createElement('option', { value: item.id, textContent: `${item.name} - ${item.val}원` });
+	prodList.forEach(({ id, name, val, q }) => {
+		const opt = createElement('option', { value: id, textContent: `${name} - ${val}원`, disabled: q === 0 });
 		appendChild({ parent: sel, children: opt });
 	});
 }

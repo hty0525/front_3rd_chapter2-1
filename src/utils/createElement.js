@@ -12,6 +12,9 @@ export function createElement(type, props) {
 				element.setAttribute('class', props[key]);
 			} else if (key === 'style') {
 				Object.assign(element.style, props[key]);
+			} else if (key === 'disabled') {
+				console.log(props[key]);
+				element.disabled = props[key];
 			} else {
 				element.setAttribute(key, props[key]);
 			}

@@ -99,11 +99,11 @@ function suggestProductItem() {
 
 function updateProductSelect() {
 	ElementProductSelect.innerHTML = '';
-	products.forEach(({ id, name, price, q }) => {
+	products.forEach(({ id, name, price, count }) => {
 		const productOption = createElement('option', {
 			value: id,
 			innerHTML: `${name} - ${price}원`,
-			disabled: q === 0,
+			disabled: count === 0,
 		});
 		appendChild({ parent: ElementProductSelect, children: productOption });
 	});

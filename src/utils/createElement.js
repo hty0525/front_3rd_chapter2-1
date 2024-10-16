@@ -4,8 +4,9 @@ export function createElement(type, props) {
 		Object.keys(props).forEach((key) => {
 			if (key === 'textContent') {
 				element[key] = props[key];
-			}
-			if (key.startsWith('on')) {
+			} else if (key === 'innerHTML') {
+				element[key] = props[key];
+			} else if (key.startsWith('on')) {
 				const eventName = key.toLowerCase().substring(2);
 				element.addEventListener(eventName, props[key]);
 			} else if (key === 'className') {
@@ -13,7 +14,6 @@ export function createElement(type, props) {
 			} else if (key === 'style') {
 				Object.assign(element.style, props[key]);
 			} else if (key === 'disabled') {
-				console.log(props[key]);
 				element.disabled = props[key];
 			} else {
 				element.setAttribute(key, props[key]);

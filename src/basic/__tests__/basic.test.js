@@ -23,7 +23,6 @@ describe('basic test', () => {
 		});
 
 		beforeEach(() => {
-			vi.useFakeTimers();
 			vi.spyOn(window, 'alert').mockImplementation(() => {});
 		});
 

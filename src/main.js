@@ -113,6 +113,7 @@ function calcCart() {
 		})();
 	}
 	let discRate = 0;
+
 	if (itemCnt >= 30) {
 		var bulkDisc = totalAmt * 0.25;
 		var itemDisc = subTot - totalAmt;
@@ -128,8 +129,10 @@ function calcCart() {
 
 	if (new Date().getDay() === 2) {
 		totalAmt *= 1 - 0.1;
-		discRate = Math.max(discRate, 0.1);
+		//화요일은 discRate 0.1로 고정 되는 부분 수정
+		discRate = Math.max((subTot - totalAmt) / subTot, 0.1);
 	}
+
 	sum.textContent = '총액: ' + Math.round(totalAmt) + '원';
 	if (discRate > 0) {
 		var span = document.createElement('span');
@@ -141,7 +144,8 @@ function calcCart() {
 	renderBonusPts();
 }
 const renderBonusPts = () => {
-	bonusPts += Math.floor(totalAmt / 1000);
+	//포인트는 무조건 +가 되는 것이 아니라, 전체 가격에 0.1%로
+	bonusPts = Math.floor(totalAmt / 1000);
 	var ptsTag = document.getElementById('loyalty-points');
 	if (!ptsTag) {
 		ptsTag = document.createElement('span');

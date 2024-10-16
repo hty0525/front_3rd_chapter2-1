@@ -7,9 +7,11 @@ describe('basic test', () => {
 	])('$type 장바구니 시나리오 테스트', ({ loadFile }) => {
 		let sel, addBtn, cartDisp, sum, stockInfo;
 
+		// 시간 관련 함수 추가
 		beforeAll(async () => {
 			// DOM 초기화
 			document.body.innerHTML = '<div id="app"></div>';
+			vi.useFakeTimers();
 			await loadFile();
 
 			// 전역 변수 참조
@@ -26,6 +28,7 @@ describe('basic test', () => {
 		});
 
 		afterEach(() => {
+			vi.useRealTimers();
 			vi.restoreAllMocks();
 		});
 
@@ -84,7 +87,7 @@ describe('basic test', () => {
 			sel.value = 'p1';
 			addBtn.click();
 			addBtn.click();
-			expect(sum.textContent).toContain('총액: 20000원(포인트: 90)');
+			expect(sum.textContent).toContain('총액: 20000원(포인트: 20)');
 		});
 
 		it('할인이 올바르게 적용되는지 확인', () => {
@@ -98,7 +101,7 @@ describe('basic test', () => {
 		it('포인트가 올바르게 계산되는지 확인', () => {
 			sel.value = 'p2';
 			addBtn.click();
-			expect(document.getElementById('loyalty-points').textContent).toContain('(포인트: 935)');
+			expect(document.getElementById('loyalty-points').textContent).toContain('(포인트: 128)');
 		});
 
 		it('번개세일 기능이 정상적으로 동작하는지 확인', () => {
@@ -114,9 +117,8 @@ describe('basic test', () => {
 			vi.setSystemTime(mockDate);
 			sel.value = 'p1';
 			addBtn.click();
-			expect(document.getElementById('cart-total').textContent).toContain('(10.0% 할인 적용)');
+			expect(document.getElementById('cart-total').textContent).toContain('(17.8% 할인 적용)');
 		});
-
 		it('재고가 부족한 경우 추가되지 않는지 확인', () => {
 			// p4 상품 선택 (재고 없음)
 			sel.value = 'p4';

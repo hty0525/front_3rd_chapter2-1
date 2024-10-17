@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
+const date = new Date(2024, 9, 12);
 describe('basic test', () => {
 	describe.each([
 		{ type: 'origin', loadFile: () => import('../../main.js') },
@@ -11,7 +12,7 @@ describe('basic test', () => {
 		beforeAll(async () => {
 			// DOM 초기화
 			document.body.innerHTML = '<div id="app"></div>';
-			vi.useFakeTimers();
+			vi.setSystemTime(date);
 			await loadFile();
 
 			// 전역 변수 참조
@@ -25,9 +26,7 @@ describe('basic test', () => {
 		beforeEach(() => {
 			vi.spyOn(window, 'alert').mockImplementation(() => {});
 		});
-
 		afterEach(() => {
-			vi.useRealTimers();
 			vi.restoreAllMocks();
 		});
 

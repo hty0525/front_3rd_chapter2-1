@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Product, ProductId } from '../../store/useCart';
+import { soldOutProduct } from '../../utils';
 
 type Props = {
 	products: Product[];
@@ -13,6 +14,10 @@ export default function Prodcut({ products, addCartItem }: Props) {
 		if (!selectRef.current) return;
 
 		const productId = selectRef.current.value as ProductId;
+		const { currentCartItemQuantity = 0, quantity = 0 } = products.find(({ id }) => id === productId) || {};
+		if (currentCartItemQuantity - quantity >= 0) {
+			return soldOutProduct();
+		}
 
 		addCartItem(productId);
 	};

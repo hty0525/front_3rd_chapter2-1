@@ -1,3 +1,5 @@
+// cart 상태를 관리하는 useCartStore 훅
+
 import { useReducer } from 'react';
 
 export type ProductId = 'p1' | 'p2' | 'p3' | 'p4' | 'p5';
@@ -7,21 +9,19 @@ export type Product = {
 	name: string;
 	price: number;
 	quantity: number;
+	currentCartItemQuantity: number;
 };
 
 const initProducts: Product[] = [
-	{ id: 'p1', name: '상품1', price: 10000, quantity: 50 },
-	{ id: 'p2', name: '상품2', price: 20000, quantity: 30 },
-	{ id: 'p3', name: '상품3', price: 30000, quantity: 20 },
-	{ id: 'p4', name: '상품4', price: 15000, quantity: 0 },
-	{ id: 'p5', name: '상품5', price: 25000, quantity: 10 },
+	{ id: 'p1', name: '상품1', price: 10000, quantity: 50, currentCartItemQuantity: 0 },
+	{ id: 'p2', name: '상품2', price: 20000, quantity: 30, currentCartItemQuantity: 0 },
+	{ id: 'p3', name: '상품3', price: 30000, quantity: 20, currentCartItemQuantity: 0 },
+	{ id: 'p4', name: '상품4', price: 15000, quantity: 0, currentCartItemQuantity: 0 },
+	{ id: 'p5', name: '상품5', price: 25000, quantity: 10, currentCartItemQuantity: 0 },
 ];
 
 export type State = {
 	products: Product[];
-	cartItems: Product[];
-	totalPrice: number;
-	discountRate: number;
 	lastSelectedProductId: ProductId | null;
 };
 
@@ -34,28 +34,62 @@ export type Action =
 	| { type: 'UPDATE_TOTAL_PRICE'; payload: { discountRate: number } };
 
 function reducer(state: State, action: Action): State {
-	const { cartItems, products } = state;
+	const { products } = state;
 
 	switch (action.type) {
-		case 'ADD_CART_ITEM':
+		case 'ADD_CART_ITEM': {
 			const { productId } = action;
-			const isEixst = cartItems.find(({ id }) => id === productId);
 
 			return {
 				...state,
-				products: products.map((product) =>
-					product.id === productId ? { ...product, quantity: product.quantity - 1 } : product,
-				),
-				cartItems: isEixst
-					? cartItems.map((item) => (item.id === productId ? { ...item, quantity: item.quantity + 1 } : item))
-					: [...cartItems, { ...products.find(({ id }) => id === productId)!, quantity: 1 }],
-				lastSelectedProductId: productId,
+				products: products.map((product) => {
+					if (product.id === productId) {
+						const { currentCartItemQuantity } = product;
+
+						return {
+							...product,
+							currentCartItemQuantity: currentCartItemQuantity + 1,
+						};
+					}
+					return product;
+				}),
 			};
-		case 'REMOVE_CART_ITEM':
-			return { ...state };
+		}
+		case 'REMOVE_CART_ITEM': {
+			const { productId } = action;
+
+			return {
+				...state,
+				products: products.map((product) => {
+					if (product.id === productId) {
+						return {
+							...product,
+							currentCartItemQuantity: 0,
+						};
+					}
+					return product;
+				}),
+			};
+		}
 
 		case 'CHANGE_CART_ITEM_COUNT':
-			return { ...state };
+			const { productId, quantity } = action.payload;
+
+			return {
+				...state,
+				products: products.map((product) => {
+					if (product.id === productId) {
+						const { currentCartItemQuantity } = product;
+
+						return {
+							...product,
+							currentCartItemQuantity: currentCartItemQuantity + quantity,
+						};
+					}
+					return product;
+				}),
+				lastSelectedProductId: productId,
+			};
 
 		default:
 			return state;
@@ -65,9 +99,6 @@ function reducer(state: State, action: Action): State {
 export function useCartStore() {
 	const [state, dispatch] = useReducer(reducer, {
 		products: initProducts,
-		cartItems: [],
-		totalPrice: 0,
-		discountRate: 0,
 		lastSelectedProductId: null,
 	});
 

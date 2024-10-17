@@ -1,3 +1,5 @@
+// cart를 보여주는 컴포넌트
+
 import React from 'react';
 import TotalCartPrice from './TotalCartPrice';
 import type { Product, ProductId } from '../../store/useCart';

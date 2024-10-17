@@ -1,3 +1,5 @@
+// product 관리하는 컴포넌트
+
 import React from 'react';
 import type { Product, ProductId } from '../../store/useCart';
 import { soldOutProduct } from '../../utils';
@@ -10,6 +12,7 @@ type Props = {
 export default function Prodcut({ products, addCartItem }: Props) {
 	const selectRef = React.useRef<HTMLSelectElement>(null);
 
+	// 상품 추가 버튼 클릭 핸들러
 	const handleAddButton = () => {
 		if (!selectRef.current) return;
 
@@ -22,6 +25,7 @@ export default function Prodcut({ products, addCartItem }: Props) {
 		addCartItem(productId);
 	};
 
+	// 5개 이하의 재고 상품 필터링
 	const filteredRemain5Products = products.filter(
 		({ quantity, currentCartItemQuantity }) => quantity - currentCartItemQuantity <= 5,
 	);

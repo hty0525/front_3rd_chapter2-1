@@ -9,18 +9,22 @@ export default function App() {
 
 	const { products } = cartState;
 
+	// cart에 상품 추가
 	const addCartItem = (productId: ProductId) => {
 		cartDispatch({ type: 'ADD_CART_ITEM', productId });
 	};
 
+	// cart에서 상품 제거
 	const removeCartItem = (productId: ProductId) => {
 		cartDispatch({ type: 'REMOVE_CART_ITEM', productId });
 	};
 
+	// cart에 상품 수량 변경
 	const changeCartItemQuantity = (productId: ProductId, quantity: number) => {
 		cartDispatch({ type: 'CHANGE_CART_ITEM_COUNT', payload: { productId, quantity } });
 	};
 
+	// cart에 담긴 상품만 필터링
 	const cartItems = products.filter(({ currentCartItemQuantity }) => currentCartItemQuantity > 0);
 
 	return (

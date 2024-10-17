@@ -1,3 +1,5 @@
+// 매직넘버 상수 관리
+
 export const PRODUCT_DISCOUNT_RATES = {
 	p1: 0.1,
 	p2: 0.15,

@@ -47,7 +47,7 @@ let lastSelectedProductId;
 let totalPrice = 0;
 
 function main() {
-	updateProductSelect();
+	renderProductSelectElement();
 
 	appendChild({
 		parent: ElementContainer,
@@ -82,7 +82,7 @@ function selectLuckyProductItem() {
 	if (Math.random() < 0.3 && luckyItem.count > 0) {
 		luckyItem.price = Math.round(luckyItem.price * 0.8);
 		alert(`번개세일! ${luckyItem.name}이(가) 20% 할인 중입니다!`);
-		updateProductSelect();
+		renderProductSelectElement();
 	}
 }
 
@@ -92,12 +92,12 @@ function suggestProductItem() {
 		if (suggest) {
 			alert(`${suggest.name}은(는) 어떠세요? 지금 구매하시면 5% 추가 할인!`);
 			suggest.price = Math.round(suggest.price * 0.95);
-			updateProductSelect();
+			renderProductSelectElement();
 		}
 	}
 }
 
-function updateProductSelect() {
+function renderProductSelectElement() {
 	ElementProductSelect.innerHTML = '';
 	products.forEach(({ id, name, price, count }) => {
 		const productOption = createElement('option', {
@@ -135,11 +135,11 @@ function calculateCartPrice() {
 		appendChild({ parent: ElmentCartTotalPrice, children: span });
 	}
 
-	updateStockInfo();
-	renderBonusPoint();
+	renderStockInfoElement();
+	renderBonusPointElement();
 }
 
-function renderBonusPoint() {
+function renderBonusPointElement() {
 	const bonusPoint = calculatePoint();
 	let ptsTag = document.getElementById('loyalty-points');
 	if (!ptsTag) {
@@ -153,7 +153,7 @@ function calculatePoint() {
 	return Math.floor(totalPrice * REWARD_POINT_RATE);
 }
 
-function updateStockInfo() {
+function renderStockInfoElement() {
 	let infoMsg = '';
 	products.forEach(({ remain, count, name }) => {
 		const remainCount = count - remain;
@@ -168,7 +168,7 @@ function updateStockInfo() {
 function onClickProductAddButton() {
 	const selectedCartItemId = ElementProductSelect.value;
 	handleCartItem(selectedCartItemId, 1);
-	updateCartItemEl(selectedCartItemId);
+	renderCartItemElement(selectedCartItemId);
 }
 
 function handleCartItem(targetProductItemId, count) {
@@ -183,7 +183,7 @@ function handleCartItem(targetProductItemId, count) {
 	} else {
 		targetProductItem.remain += count;
 	}
-	updateCartItemEl(targetProductItemId);
+	renderCartItemElement(targetProductItemId);
 	calculateCartPrice();
 	lastSelectedProductId = id;
 }
@@ -199,7 +199,7 @@ function onClickCartContainer(event) {
 	}
 }
 
-function updateCartItemEl(selectedProductId) {
+function renderCartItemElement(selectedProductId) {
 	const ElementTargetProductItem = document.getElementById(selectedProductId);
 	const { price, remain, name } = products.find((item) => item.id === selectedProductId);
 

@@ -22,6 +22,10 @@ export default function Prodcut({ products, addCartItem }: Props) {
 		addCartItem(productId);
 	};
 
+	const filteredRemain5Products = products.filter(
+		({ quantity, currentCartItemQuantity }) => quantity - currentCartItemQuantity <= 5,
+	);
+
 	return (
 		<div>
 			<select ref={selectRef} id="product-select" className="border rounded p-2 mr-2">
@@ -35,7 +39,17 @@ export default function Prodcut({ products, addCartItem }: Props) {
 				추가
 			</button>
 			<div id="stock-status" className="text-sm text-gray-500 mt-2">
-				상품4: 품절
+				{filteredRemain5Products.map(({ quantity, currentCartItemQuantity, name }, idx, { length }) => {
+					const isLastItem = idx !== length - 1;
+					const isSoldOut = currentCartItemQuantity - quantity >= 0;
+
+					return (
+						<span key={name}>
+							{name}: {isSoldOut ? '품절' : `${quantity - currentCartItemQuantity}개 남음`}
+							{isLastItem ? ', ' : ''}
+						</span>
+					);
+				})}
 			</div>
 		</div>
 	);

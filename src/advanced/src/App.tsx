@@ -3,6 +3,7 @@ import Layout from './_components/Layout';
 import { Cart } from './_components/Cart';
 import Prodcut from './_components/Prodcut';
 import { ProductId, useCartStore } from './store/useCart';
+import { useSetInterval } from './hook';
 
 export default function App() {
 	const [cartState, cartDispatch] = useCartStore();
@@ -26,6 +27,16 @@ export default function App() {
 
 	// cart에 담긴 상품만 필터링
 	const cartItems = products.filter(({ currentCartItemQuantity }) => currentCartItemQuantity > 0);
+
+	// 랜덤 럭키 이벤트!
+	useSetInterval(() => {
+		cartDispatch({ type: 'LUCKY_PRODUCT_ITEM' });
+	}, Math.random() * 20000);
+
+	// 랜덤 추천 이벤트
+	useSetInterval(() => {
+		cartDispatch({ type: 'SUGGEST_PRODUCT_ITEM' });
+	}, Math.random() * 10000);
 
 	return (
 		<Layout>

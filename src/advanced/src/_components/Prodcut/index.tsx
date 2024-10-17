@@ -20,8 +20,8 @@ export default function Prodcut({ products, addCartItem }: Props) {
 	return (
 		<div>
 			<select ref={selectRef} id="product-select" className="border rounded p-2 mr-2">
-				{products.map(({ count, price, id, name }) => (
-					<option key={id} value={id} disabled={count === 0}>
+				{products.map(({ quantity, price, id, name }) => (
+					<option key={id} value={id} disabled={quantity === 0}>
 						{name} - {price.toLocaleString()}원
 					</option>
 				))}

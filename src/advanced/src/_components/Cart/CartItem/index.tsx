@@ -3,11 +3,11 @@ import { Product } from '../../../store/useCart';
 
 type Props = Product;
 
-export default function CartItem({ id, name, price, count }: Props) {
+export default function CartItem({ id, name, price, quantity }: Props) {
 	return (
 		<div id="p1" className="flex justify-between items-center mb-2">
 			<span>
-				{name} - {price.toLocaleString()}원 x {count}
+				{name} - {price.toLocaleString()}원 x {quantity}
 			</span>
 			<div>
 				{['plus', 'minus', 'remove'].map((key) => {

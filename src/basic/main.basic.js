@@ -97,6 +97,7 @@ function suggestProductItem() {
 	}
 }
 
+// Select Element에 상품 목록을 렌더링합니다.
 function renderProductSelectElement() {
 	ElementProductSelect.innerHTML = '';
 	products.forEach(({ id, name, price, count }) => {

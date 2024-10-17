@@ -9,7 +9,7 @@ type Props = {
 export default function Prodcut({ products, addCartItem }: Props) {
 	const selectRef = React.useRef<HTMLSelectElement>(null);
 
-	const onClickAddButton = () => {
+	const handleAddButton = () => {
 		if (!selectRef.current) return;
 
 		const productId = selectRef.current.value as ProductId;
@@ -26,7 +26,7 @@ export default function Prodcut({ products, addCartItem }: Props) {
 					</option>
 				))}
 			</select>
-			<button id="add-to-cart" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={onClickAddButton}>
+			<button id="add-to-cart" className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleAddButton}>
 				추가
 			</button>
 			<div id="stock-status" className="text-sm text-gray-500 mt-2">

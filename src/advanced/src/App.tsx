@@ -21,7 +21,7 @@ export default function App() {
 
 	// cart에 상품 수량 변경
 	const changeCartItemQuantity = (productId: ProductId, quantity: number) => {
-		cartDispatch({ type: 'CHANGE_CART_ITEM_COUNT', payload: { productId, quantity } });
+		cartDispatch({ type: 'CHANGE_CART_ITEM_QUANTITY', payload: { productId, quantity } });
 	};
 
 	// cart에 담긴 상품만 필터링

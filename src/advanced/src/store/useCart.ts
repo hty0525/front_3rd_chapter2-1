@@ -28,7 +28,7 @@ export type State = {
 export type Action =
 	| { type: 'ADD_CART_ITEM' | 'REMOVE_CART_ITEM'; productId: ProductId }
 	| {
-			type: 'CHANGE_CART_ITEM_COUNT';
+			type: 'CHANGE_CART_ITEM_QUANTITY';
 			payload: { productId: ProductId; quantity: number };
 	  }
 	| { type: 'UPDATE_TOTAL_PRICE'; payload: { discountRate: number } };
@@ -72,7 +72,7 @@ function reducer(state: State, action: Action): State {
 			};
 		}
 
-		case 'CHANGE_CART_ITEM_COUNT':
+		case 'CHANGE_CART_ITEM_QUANTITY':
 			const { productId, quantity } = action.payload;
 
 			return {

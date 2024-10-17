@@ -12,14 +12,6 @@ export type Product = {
 	currentCartItemQuantity: number;
 };
 
-const initProducts: Product[] = [
-	{ id: 'p1', name: '상품1', price: 10000, quantity: 50, currentCartItemQuantity: 5 },
-	{ id: 'p2', name: '상품2', price: 20000, quantity: 30, currentCartItemQuantity: 5 },
-	{ id: 'p3', name: '상품3', price: 30000, quantity: 20, currentCartItemQuantity: 5 },
-	{ id: 'p4', name: '상품4', price: 15000, quantity: 0, currentCartItemQuantity: 0 },
-	{ id: 'p5', name: '상품5', price: 25000, quantity: 10, currentCartItemQuantity: 5 },
-];
-
 export type State = {
 	products: Product[];
 	lastSelectedProductId: ProductId | null;
@@ -35,10 +27,21 @@ export type Action =
 	| { type: 'LUCKY_PRODUCT_ITEM' }
 	| { type: 'SUGGEST_PRODUCT_ITEM' };
 
+// 초기 상태값
+const initProducts: Product[] = [
+	{ id: 'p1', name: '상품1', price: 10000, quantity: 50, currentCartItemQuantity: 5 },
+	{ id: 'p2', name: '상품2', price: 20000, quantity: 30, currentCartItemQuantity: 5 },
+	{ id: 'p3', name: '상품3', price: 30000, quantity: 20, currentCartItemQuantity: 5 },
+	{ id: 'p4', name: '상품4', price: 15000, quantity: 0, currentCartItemQuantity: 0 },
+	{ id: 'p5', name: '상품5', price: 25000, quantity: 10, currentCartItemQuantity: 5 },
+];
+
+// reducer함수
 function reducer(state: State, action: Action): State {
 	const { products, lastSelectedProductId } = state;
 
 	switch (action.type) {
+		// 장바구니 상품 추가
 		case 'ADD_CART_ITEM': {
 			const { productId } = action;
 
@@ -57,6 +60,8 @@ function reducer(state: State, action: Action): State {
 				}),
 			};
 		}
+
+		// 장바구니 상품 제거
 		case 'REMOVE_CART_ITEM': {
 			const { productId } = action;
 
@@ -74,6 +79,7 @@ function reducer(state: State, action: Action): State {
 			};
 		}
 
+		// 장바구니 상품 수량 변경
 		case 'CHANGE_CART_ITEM_QUANTITY': {
 			const { productId, quantity } = action.payload;
 
@@ -94,6 +100,7 @@ function reducer(state: State, action: Action): State {
 			};
 		}
 
+		// 깜짝 상품 할인 이벤트
 		case 'LUCKY_PRODUCT_ITEM': {
 			const luckyItem = products[Math.floor(Math.random() * products.length)];
 			const { quantity, price, id, name } = luckyItem;
@@ -110,6 +117,7 @@ function reducer(state: State, action: Action): State {
 			return state;
 		}
 
+		// 추천 상품 이벤트
 		case 'SUGGEST_PRODUCT_ITEM': {
 			if (lastSelectedProductId) {
 				const suggest = products.find(

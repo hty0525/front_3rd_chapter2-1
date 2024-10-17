@@ -1,11 +1,20 @@
 import React from 'react';
-import CartItems from './CartItems';
 import CartTotalPrice from './CartTotalPrice';
+import type { Product } from '../../store/useCart';
+import CartItem from './CartItem';
 
-export function Cart() {
+type Props = {
+	cartItems: Product[];
+};
+
+export function Cart({ cartItems }: Props) {
 	return (
 		<div>
-			<CartItems />
+			<div id="cart-items">
+				{cartItems.map((product) => (
+					<CartItem key={product.id} {...product} />
+				))}
+			</div>
 			<CartTotalPrice />
 		</div>
 	);

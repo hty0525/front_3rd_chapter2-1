@@ -70,6 +70,7 @@ function main() {
 			selectLuckyProductItem();
 		}, 30000);
 	}, Math.random() * 10000);
+
 	setTimeout(() => {
 		setInterval(() => {
 			suggestProductItem();
@@ -95,19 +96,6 @@ function suggestProductItem() {
 			renderProductSelectElement();
 		}
 	}
-}
-
-// Select Element에 상품 목록을 렌더링합니다.
-function renderProductSelectElement() {
-	ElementProductSelect.innerHTML = '';
-	products.forEach(({ id, name, price, count }) => {
-		const productOption = createElement('option', {
-			value: id,
-			innerHTML: `${name} - ${price}원`,
-			disabled: count === 0,
-		});
-		appendChild({ parent: ElementProductSelect, children: productOption });
-	});
 }
 
 function calculateCartPrice() {
@@ -140,36 +128,8 @@ function calculateCartPrice() {
 	renderBonusPointElement();
 }
 
-function renderBonusPointElement() {
-	const bonusPoint = calculatePoint();
-	let ptsTag = document.getElementById('loyalty-points');
-	if (!ptsTag) {
-		ptsTag = createElement('span', { id: 'loyalty-points', className: 'text-blue-500 ml-2' });
-		appendChild({ parent: ElmentCartTotalPrice, children: ptsTag });
-	}
-	ptsTag.innerHTML = `(포인트: ${bonusPoint})`;
-}
-
 function calculatePoint() {
 	return Math.floor(totalPrice * REWARD_POINT_RATE);
-}
-
-function renderStockInfoElement() {
-	let infoMsg = '';
-	products.forEach(({ remain, count, name }) => {
-		const remainCount = count - remain;
-
-		if (remainCount < 5) {
-			infoMsg += `${name}: ${remainCount > 0 ? `재고 부족 (${remainCount}개 남음)` : '품절'} \n`;
-		}
-	});
-	ElementStockStatus.innerHTML = infoMsg;
-}
-
-function onClickProductAddButton() {
-	const selectedCartItemId = ElementProductSelect.value;
-	handleCartItem(selectedCartItemId, 1);
-	renderCartItemElement(selectedCartItemId);
 }
 
 function handleCartItem(targetProductItemId, count) {
@@ -189,15 +149,26 @@ function handleCartItem(targetProductItemId, count) {
 	lastSelectedProductId = id;
 }
 
-function onClickCartContainer(event) {
-	const target = event.target;
-	if (target.classList.contains('quantity-change') || target.classList.contains('remove-item')) {
-		const productId = target.dataset.productId;
+function renderProductSelectElement() {
+	ElementProductSelect.innerHTML = '';
+	products.forEach(({ id, name, price, count }) => {
+		const productOption = createElement('option', {
+			value: id,
+			innerHTML: `${name} - ${price}원`,
+			disabled: count === 0,
+		});
+		appendChild({ parent: ElementProductSelect, children: productOption });
+	});
+}
 
-		const productChangeCount = target.dataset.change ?? 0;
-
-		handleCartItem(productId, Number(productChangeCount));
+function renderBonusPointElement() {
+	const bonusPoint = calculatePoint();
+	let ptsTag = document.getElementById('loyalty-points');
+	if (!ptsTag) {
+		ptsTag = createElement('span', { id: 'loyalty-points', className: 'text-blue-500 ml-2' });
+		appendChild({ parent: ElmentCartTotalPrice, children: ptsTag });
 	}
+	ptsTag.innerHTML = `(포인트: ${bonusPoint})`;
 }
 
 function renderCartItemElement(selectedProductId) {
@@ -249,6 +220,35 @@ function renderCartItemElement(selectedProductId) {
 		appendChild({ parent: ElementProductItem, children: [ElementProductInfo, ElementProductButtonWrap] });
 
 		appendChild({ parent: ElementCartContainer, children: ElementProductItem });
+	}
+}
+
+function renderStockInfoElement() {
+	let infoMsg = '';
+	products.forEach(({ remain, count, name }) => {
+		const remainCount = count - remain;
+
+		if (remainCount < 5) {
+			infoMsg += `${name}: ${remainCount > 0 ? `재고 부족 (${remainCount}개 남음)` : '품절'} \n`;
+		}
+	});
+	ElementStockStatus.innerHTML = infoMsg;
+}
+
+function onClickProductAddButton() {
+	const selectedCartItemId = ElementProductSelect.value;
+	handleCartItem(selectedCartItemId, 1);
+	renderCartItemElement(selectedCartItemId);
+}
+
+function onClickCartContainer(event) {
+	const target = event.target;
+	if (target.classList.contains('quantity-change') || target.classList.contains('remove-item')) {
+		const productId = target.dataset.productId;
+
+		const productChangeCount = target.dataset.change ?? 0;
+
+		handleCartItem(productId, Number(productChangeCount));
 	}
 }
 

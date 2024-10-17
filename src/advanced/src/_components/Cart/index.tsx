@@ -1,5 +1,5 @@
 import React from 'react';
-import CartTotalPrice from './CartTotalPrice';
+import TotalCartPrice from './TotalCartPrice';
 import type { Product, ProductId } from '../../store/useCart';
 import { soldOutProduct } from '../../utils';
 
@@ -67,7 +67,7 @@ export function Cart({ cartItems, removeCartItem, changeCartItemQuantity }: Prop
 					</div>
 				))}
 			</div>
-			<CartTotalPrice />
+			<TotalCartPrice cartItems={cartItems} />
 		</div>
 	);
 }

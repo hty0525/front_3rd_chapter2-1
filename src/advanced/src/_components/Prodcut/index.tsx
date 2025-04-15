@@ -9,7 +9,7 @@ type Props = {
 	addCartItem: (productId: ProductId) => void;
 };
 
-export default function Prodcut({ products, addCartItem }: Props) {
+export default function Product({ products, addCartItem }: Props) {
 	const selectRef = React.useRef<HTMLSelectElement>(null);
 
 	// 상품 추가 버튼 클릭 핸들러

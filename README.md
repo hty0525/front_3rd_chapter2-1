@@ -68,7 +68,7 @@
 - 의견 통일이 필요한 것
 
   - event 핸들러를 어떻게 할것인가!
-    1. on + event + target -> onClickProdcutAddButton
+    1. on + event + target -> onClickProductAddButton
        - 태영 : react에서 조차 event 핸들러를 추가하려면 on+event를 사용한다.
          그렇기에 훨씬 직관적이다!
        - 영우 : 직관적이어서 더 좋다

@@ -26,11 +26,11 @@ const ElementContainer = createElement('div', {
 	className: 'max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8',
 });
 
-const ElmentTitle = createElement('h1', { className: 'text-2xl font-bold mb-4', innerHTML: '장바구니' });
+const ElementTitle = createElement('h1', { className: 'text-2xl font-bold mb-4', innerHTML: '장바구니' });
 
 const ElementProductSelect = createElement('select', { id: 'product-select', className: 'border rounded p-2 mr-2' });
 
-const ElmentAddProductButton = createElement('button', {
+const ElementAddProductButton = createElement('button', {
 	id: 'add-to-cart',
 	className: 'bg-blue-500 text-white px-4 py-2 rounded',
 	innerHTML: '추가',
@@ -39,7 +39,7 @@ const ElmentAddProductButton = createElement('button', {
 
 const ElementCartContainer = createElement('div', { id: 'cart-items', onClick: onClickCartContainer });
 
-const ElmentCartTotalPrice = createElement('div', { id: 'cart-total', className: 'text-xl font-bold my-4' });
+const ElementCartTotalPrice = createElement('div', { id: 'cart-total', className: 'text-xl font-bold my-4' });
 
 const ElementStockStatus = createElement('div', { id: 'stock-status', className: 'text-sm text-gray-500 mt-2' });
 
@@ -52,11 +52,11 @@ function main() {
 	appendChild({
 		parent: ElementContainer,
 		children: [
-			ElmentTitle,
+			ElementTitle,
 			ElementCartContainer,
-			ElmentCartTotalPrice,
+			ElementCartTotalPrice,
 			ElementProductSelect,
-			ElmentAddProductButton,
+			ElementAddProductButton,
 			ElementStockStatus,
 		],
 	});
@@ -99,12 +99,12 @@ function suggestProductItem() {
 }
 
 function calculateCartPrice() {
-	const totalProdcutItems = products.reduce((acc, { remain }) => acc + remain, 0);
+	const totalProductItems = products.reduce((acc, { remain }) => acc + remain, 0);
 	const cartTotalPrice = products.reduce((acc, { price, remain }) => acc + price * remain, 0);
 
 	let discountedCartTotalPrice = products.reduce((acc, { id, price, remain }) => {
 		let discountRate = 0;
-		if (totalProdcutItems >= ALL_DISCOUNT_COUNT) discountRate = ALL_DISCOUNT_RATE;
+		if (totalProductItems >= ALL_DISCOUNT_COUNT) discountRate = ALL_DISCOUNT_RATE;
 		else if (remain >= 10) discountRate = PRODUCT_DISCOUNT_RATES[id] || 0;
 		return acc + price * remain * (1 - discountRate);
 	}, 0);
@@ -113,7 +113,7 @@ function calculateCartPrice() {
 		discountedCartTotalPrice = discountedCartTotalPrice * (1 - TUESDAY_DISCOUNT_RATE);
 	}
 
-	ElmentCartTotalPrice.innerHTML = `총액: ${Math.round(discountedCartTotalPrice)}원`;
+	ElementCartTotalPrice.innerHTML = `총액: ${Math.round(discountedCartTotalPrice)}원`;
 	totalPrice = discountedCartTotalPrice;
 	if (cartTotalPrice !== discountedCartTotalPrice) {
 		const totalDiscountRate = (((cartTotalPrice - discountedCartTotalPrice) / cartTotalPrice) * 100).toFixed(1);
@@ -121,7 +121,7 @@ function calculateCartPrice() {
 			className: 'text-green-500 ml-2',
 			innerHTML: `(${totalDiscountRate}% 할인 적용)`,
 		});
-		appendChild({ parent: ElmentCartTotalPrice, children: span });
+		appendChild({ parent: ElementCartTotalPrice, children: span });
 	}
 
 	renderStockInfoElement();
@@ -166,7 +166,7 @@ function renderBonusPointElement() {
 	let ptsTag = document.getElementById('loyalty-points');
 	if (!ptsTag) {
 		ptsTag = createElement('span', { id: 'loyalty-points', className: 'text-blue-500 ml-2' });
-		appendChild({ parent: ElmentCartTotalPrice, children: ptsTag });
+		appendChild({ parent: ElementCartTotalPrice, children: ptsTag });
 	}
 	ptsTag.innerHTML = `(포인트: ${bonusPoint})`;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from './_components/Layout';
 import { Cart } from './_components/Cart';
-import Prodcut from './_components/Prodcut';
+import Product from './_components/Product';
 import { ProductId, useCartStore } from './store/useCart';
 import { useSetInterval } from './hook';
 
@@ -43,7 +43,7 @@ export default function App() {
 			<div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
 				<h1 className="text-2xl font-bold mb-4">장바구니</h1>
 				<Cart cartItems={cartItems} removeCartItem={removeCartItem} changeCartItemQuantity={changeCartItemQuantity} />
-				<Prodcut products={products} addCartItem={addCartItem} />
+				<Product products={products} addCartItem={addCartItem} />
 			</div>
 		</Layout>
 	);
